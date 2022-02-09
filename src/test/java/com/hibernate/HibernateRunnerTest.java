@@ -1,8 +1,6 @@
 package com.hibernate;
 
-import com.hibernate.entity.Company;
-import com.hibernate.entity.Profile;
-import com.hibernate.entity.User;
+import com.hibernate.entity.*;
 import com.hibernate.util.HibernateUtil;
 import lombok.Cleanup;
 import org.hibernate.Hibernate;
@@ -17,12 +15,44 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.Instant;
 import java.util.Arrays;
 
 import static java.util.Optional.ofNullable;
 import static java.util.stream.Collectors.joining;
 
 class HibernateRunnerTest {
+
+    @Test
+    void checkManyToMany() {
+        try (var sessionFactory = HibernateUtil.buildSessionFactory();
+             var session = sessionFactory.openSession()) {
+            session.beginTransaction();
+
+            var user = session.get(User.class, 9L);
+            var chat = session.get(Chat.class, 1L);
+
+            var userChat = UserChat.builder()
+                    .createdAt(Instant.now())
+                    .createdBy(user.getUsername())
+                    .build();
+            userChat.setUser(user);
+            userChat.setChat(chat);
+
+            session.save(userChat);
+
+//            user.getChats().clear();
+
+//            var chat = Chat.builder()
+//                    .name("java")
+//                    .build();
+//            user.addChat(chat);
+//
+//            session.save(chat);
+
+            session.getTransaction().commit();
+        }
+    }
 
     @Test
     void checkOneToOne() {

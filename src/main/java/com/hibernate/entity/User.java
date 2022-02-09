@@ -6,13 +6,15 @@ import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @Entity
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(exclude = {"company", "profile"})
+@ToString(exclude = {"company", "profile", "userChats"})
 @EqualsAndHashCode(of = "username")
 @Table(name = "users", schema = "public")
 @TypeDef(name = "jsonbName", typeClass = JsonBinaryType.class)
@@ -45,4 +47,8 @@ public class User {
             optional = false
     )
     private Profile profile;
+
+    @Builder.Default
+    @OneToMany(mappedBy = "user")
+    private Set<UserChat> userChats = new HashSet<>();
 }
