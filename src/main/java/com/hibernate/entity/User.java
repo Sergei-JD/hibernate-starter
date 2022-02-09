@@ -13,6 +13,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString(exclude = "company")
+@EqualsAndHashCode(of = "username")
 @Table(name = "users", schema = "public")
 @TypeDef(name = "jsonbName", typeClass = JsonBinaryType.class)
 public class User {
@@ -33,7 +34,7 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_id") // company_id
     private Company company;
 }
