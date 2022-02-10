@@ -1,12 +1,11 @@
 package com.hibernate.entity;
 
 import lombok.*;
+import org.hibernate.annotations.SortComparator;
+import org.hibernate.annotations.SortNatural;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Data
 @Entity
@@ -26,7 +25,12 @@ public class Company {
 
     @Builder.Default
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<User> users = new HashSet<>();
+//    @org.hibernate.annotations.OrderBy(clause = "username DESC, lastname ASC")
+//    @OrderBy("username DESC, personalInfo.firstname")
+    @OrderColumn(name = "id")
+    @SortNatural
+//    @SortComparator()
+    private SortedSet<User> users = new TreeSet<>();
 
     @Builder.Default
     @ElementCollection
