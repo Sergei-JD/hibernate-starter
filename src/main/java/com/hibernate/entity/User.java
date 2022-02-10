@@ -17,7 +17,7 @@ import java.util.List;
 @ToString(exclude = {"company", "profile", "userChats"})
 @EqualsAndHashCode(of = "username")
 @Table(name = "users", schema = "public")
-//@TypeDef(name = "jsonbName", typeClass = JsonBinaryType.class)
+@TypeDef(name = "jsonbName", typeClass = JsonBinaryType.class)
 public class User implements Comparable<User> {
 
     @Id
@@ -30,8 +30,8 @@ public class User implements Comparable<User> {
     @Column(unique = true, columnDefinition = "")
     private String username;
 
-//    @Type(type = "jsonbName")
-//    private String info;
+    @Type(type = "jsonbName")
+    private String info;
 
     @Enumerated(EnumType.STRING)
     private Role role;

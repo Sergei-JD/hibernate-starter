@@ -1,6 +1,7 @@
 package com.hibernate;
 
 import com.hibernate.entity.*;
+import com.hibernate.util.HibernateTestUtil;
 import com.hibernate.util.HibernateUtil;
 import lombok.Cleanup;
 import org.hibernate.Hibernate;
@@ -25,7 +26,7 @@ class HibernateRunnerTest {
 
     @Test
     void checkH2() {
-        try (var sessionFactory = HibernateUtil.buildSessionFactory();
+        try (var sessionFactory = HibernateTestUtil.buildSessionFactory();
              var session = sessionFactory.openSession()) {
             session.beginTransaction();
 
