@@ -7,9 +7,9 @@ import lombok.NoArgsConstructor;
 import javax.persistence.Embeddable;
 
 @Data
-@Embeddable
 @NoArgsConstructor
 @AllArgsConstructor(staticName = "of")
+@Embeddable
 public class LocaleInfo {
 
     private String lang;

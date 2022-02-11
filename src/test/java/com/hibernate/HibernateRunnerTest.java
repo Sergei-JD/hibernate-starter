@@ -1,22 +1,26 @@
 package com.hibernate;
 
-import com.hibernate.entity.*;
+import com.hibernate.entity.Chat;
+import com.hibernate.entity.Company;
+import com.hibernate.entity.User;
+import com.hibernate.entity.UserChat;
 import com.hibernate.util.HibernateTestUtil;
 import com.hibernate.util.HibernateUtil;
 import lombok.Cleanup;
 import org.hibernate.Hibernate;
+import org.hibernate.annotations.QueryHints;
 import org.junit.jupiter.api.Test;
 
-import javax.persistence.Column;
 import javax.persistence.Table;
-import java.lang.reflect.Constructor;
+import javax.persistence.Column;
+import javax.persistence.FlushModeType;
 import java.lang.reflect.Field;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Connection;
 import java.sql.SQLException;
-import java.time.Instant;
+import java.sql.PreparedStatement;
 import java.util.Arrays;
 
 import static java.util.Optional.ofNullable;
@@ -25,37 +29,28 @@ import static java.util.stream.Collectors.joining;
 class HibernateRunnerTest {
 
     @Test
-    void checkH2() {
+    void checkHql() {
         try (var sessionFactory = HibernateTestUtil.buildSessionFactory();
              var session = sessionFactory.openSession()) {
             session.beginTransaction();
 
-            var google = Company.builder()
-                    .name("Google")
-                    .build();
-            session.save(google);
+//            HQL / JPQL
+//            select u.* from users u where u.firstname = 'Ivan'
+            String name = "Ivan";
+            var result = session.createNamedQuery(
+//                    "select u from User u where u.personalInfo.firstname = ?1", User.class)
+                            "findUserByName", User.class)
+//                    .setParameter(1, name)
+                    .setParameter("firstname", name)
+                    .setParameter("companyName", "Google")
+                    .setFlushMode(FlushModeType.COMMIT)
+                    .setHint(QueryHints.FETCH_SIZE, "50")
+                    .list();
 
-            Programmer programmer = Programmer.builder()
-                    .username("ivan@gmail.com")
-                    .language(Language.JAVA)
-                    .company(google)
-                    .build();
-            session.save(programmer);
+            var countRows = session.createQuery("update User u set u.role = 'ADMIN'")
+                    .executeUpdate();
 
-            Manager manager = Manager.builder()
-                    .username("sveta@gmail.com")
-                    .projectName("Starter")
-                    .company(google)
-                    .build();
-            session.save(manager);
-            session.flush();
-
-            session.clear();
-
-            var programmer1 = session.get(Programmer.class, 1L);
-            var manager1 = session.get(User.class, 2L);
-            System.out.println();
-
+            session.createNativeQuery("select u.* from users u where u.firstname = 'Ivan'", User.class);
 
             session.getTransaction().commit();
         }
@@ -63,12 +58,12 @@ class HibernateRunnerTest {
 
     @Test
     void localeInfo() {
-        try (var sessionFactory = HibernateUtil.buildSessionFactory();
+        try (var sessionFactory = HibernateTestUtil.buildSessionFactory();
              var session = sessionFactory.openSession()) {
             session.beginTransaction();
 
             var company = session.get(Company.class, 1);
-//            company.getLocales().add(LocaleInfo.of("ru", "Russian description"));
+//            company.getLocales().add(LocaleInfo.of("ru", "Описание на русском"));
 //            company.getLocales().add(LocaleInfo.of("en", "English description"));
 //            System.out.println(company.getLocales());
             company.getUsers().forEach((k, v) -> System.out.println(v));
@@ -83,7 +78,7 @@ class HibernateRunnerTest {
              var session = sessionFactory.openSession()) {
             session.beginTransaction();
 
-            var user = session.get(User.class, 9L);
+            var user = session.get(User.class, 10L);
             var chat = session.get(Chat.class, 1L);
 
             var userChat = UserChat.builder()
@@ -98,7 +93,7 @@ class HibernateRunnerTest {
 //            user.getChats().clear();
 
 //            var chat = Chat.builder()
-//                    .name("java")
+//                    .name("dmdev")
 //                    .build();
 //            user.addChat(chat);
 //
@@ -114,7 +109,7 @@ class HibernateRunnerTest {
              var session = sessionFactory.openSession()) {
             session.beginTransaction();
 
-            var user = session.get(User.class, 9L);
+            var user = session.get(User.class, 10L);
             System.out.println();
 
 //            var user = User.builder()
@@ -124,9 +119,8 @@ class HibernateRunnerTest {
 //                    .language("ru")
 //                    .street("Kolasa 18")
 //                    .build();
-//
 //            profile.setUser(user);
-//
+////
 //            session.save(user);
 //            profile.setUser(user);
 //            session.save(profile);
@@ -164,10 +158,22 @@ class HibernateRunnerTest {
     }
 
     @Test
+    void getCompanyById() {
+        @Cleanup var sessionFactory = HibernateUtil.buildSessionFactory();
+        @Cleanup var session = sessionFactory.openSession();
+        session.beginTransaction();
+
+        var company = session.get(Company.class, 1);
+        Hibernate.initialize(company.getUsers());
+        System.out.println();
+
+        session.getTransaction().commit();
+    }
+
+    @Test
     void deleteCompany() {
         @Cleanup var sessionFactory = HibernateUtil.buildSessionFactory();
         @Cleanup var session = sessionFactory.openSession();
-
         session.beginTransaction();
 
         var user = session.get(User.class, 1L);
@@ -180,18 +186,17 @@ class HibernateRunnerTest {
     void addUserToNewCompany() {
         @Cleanup var sessionFactory = HibernateUtil.buildSessionFactory();
         @Cleanup var session = sessionFactory.openSession();
-
         session.beginTransaction();
 
         var company = Company.builder()
                 .name("Facebook")
                 .build();
 
-//        User user = User.builder()
+//        var user = User.builder()
 //                .username("sveta@gmail.com")
 //                .build();
 ////        user.setCompany(company);
-////        company.getUsers().add(user);
+////        company.getUsers().add(user)
 //        company.addUser(user);
 //        company.addUser(user);
 
@@ -204,11 +209,9 @@ class HibernateRunnerTest {
     void oneToMany() {
         @Cleanup var sessionFactory = HibernateUtil.buildSessionFactory();
         @Cleanup var session = sessionFactory.openSession();
-
         session.beginTransaction();
 
         var company = session.get(Company.class, 1);
-        Hibernate.initialize(company.getUsers());
         System.out.println(company.getUsers());
 
         session.getTransaction().commit();
@@ -219,7 +222,7 @@ class HibernateRunnerTest {
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = preparedStatement.executeQuery();
         resultSet.getString("username");
-        resultSet.getString("firstname");
+        resultSet.getString("lastname");
         resultSet.getString("lastname");
 
         Class<User> clazz = User.class;
@@ -268,5 +271,6 @@ class HibernateRunnerTest {
             preparedStatement.setObject(1, declaredField.get(user));
         }
     }
+
 
 }

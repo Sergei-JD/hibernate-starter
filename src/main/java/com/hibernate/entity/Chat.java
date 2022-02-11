@@ -1,8 +1,18 @@
 package com.hibernate.entity;
 
-import lombok.*;
+import lombok.Data;
+import lombok.Builder;
+import lombok.ToString;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.Id;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,8 +21,8 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(exclude = "userChats")
 @EqualsAndHashCode(of = "name")
+@ToString(exclude = "userChats")
 public class Chat {
 
     @Id

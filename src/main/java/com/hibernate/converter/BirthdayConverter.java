@@ -2,10 +2,11 @@ package com.hibernate.converter;
 
 import com.hibernate.entity.Birthday;
 
-import javax.persistence.AttributeConverter;
-import javax.persistence.Converter;
 import java.sql.Date;
 import java.util.Optional;
+import javax.persistence.Converter;
+import javax.persistence.AttributeConverter;
+
 
 @Converter(autoApply = true)
 public class BirthdayConverter implements AttributeConverter<Birthday, Date> {
