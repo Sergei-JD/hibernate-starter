@@ -39,7 +39,6 @@ dependencies {
     implementation 'com.querydsl:querydsl-jpa:5.0.0'
     annotationProcessor 'com.querydsl:querydsl-apt:5.0.0'
 
-
     compileOnly 'org.projectlombok:lombok:1.18.20'
     annotationProcessor 'org.projectlombok:lombok:1.18.20'
 
@@ -58,10 +57,10 @@ querydsl {
 }
 
 compileQuerydsl {
-    enabled = false
+//    enabled = false
     options.annotationProcessorPath = configurations.querydsl
 }
-//compileQuerydsl.dependsOn(clean)
+compileQuerydsl.dependsOn(clean)
 
 test {
     useJUnitPlatform()

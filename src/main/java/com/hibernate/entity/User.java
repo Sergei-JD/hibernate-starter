@@ -2,6 +2,7 @@ package com.hibernate.entity;
 
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import lombok.*;
+import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 
@@ -60,6 +61,8 @@ public class User implements Comparable<User>, BaseEntity<Long> {
     private Set<UserChat> userChats = new HashSet<>();
 
     @Builder.Default
+    @BatchSize(size = 3)
+    // 1 + N -> 1 + 5 -> 1 + 5/3 -> 3
     @OneToMany(mappedBy = "receiver")
     private List<Payment> payments = new ArrayList<>();
 

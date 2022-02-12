@@ -3,14 +3,11 @@ package com.hibernate.dao;
 import com.hibernate.entity.Payment;
 import com.hibernate.entity.User;
 import com.querydsl.core.Tuple;
-import com.querydsl.core.types.Predicate;
 import com.querydsl.jpa.impl.JPAQuery;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.hibernate.Session;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static com.hibernate.entity.QCompany.company;

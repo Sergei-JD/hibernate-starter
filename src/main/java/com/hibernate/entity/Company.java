@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.SortNatural;
 
 import javax.persistence.CascadeType;
@@ -31,6 +32,7 @@ import java.util.TreeMap;
 @AllArgsConstructor
 @EqualsAndHashCode(of = "name")
 @ToString(exclude = "users")
+@BatchSize(size = 3)
 public class Company {
 
     @Id
