@@ -65,7 +65,7 @@ public class User implements Comparable<User>, BaseEntity<Long> {
     @Builder.Default
 //    @BatchSize(size = 3)
     // 1 + N -> 1 + 500 -> 1 + 500/3 -> (>100)
-    @Fetch(FetchMode.SUBSELECT)
+//    @Fetch(FetchMode.SUBSELECT)
     // 1 + N -> 1 -> 2
     @OneToMany(mappedBy = "receiver")
     private List<Payment> payments = new ArrayList<>();
