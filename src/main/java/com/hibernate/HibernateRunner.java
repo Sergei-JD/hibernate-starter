@@ -1,52 +1,38 @@
 package com.hibernate;
 
-import com.hibernate.entity.User;
-import com.hibernate.entity.UserChat;
+import com.hibernate.entity.Payment;
 import com.hibernate.util.HibernateUtil;
+import com.hibernate.util.TestDataImporter;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.graph.GraphSemantic;
 
+import javax.persistence.LockModeType;
+import javax.transaction.Transactional;
 import java.sql.SQLException;
-import java.util.Map;
 
 @Slf4j
 public class HibernateRunner {
 
+    @Transactional
     public static void main(String[] args) throws SQLException {
         try (SessionFactory sessionFactory = HibernateUtil.buildSessionFactory();
-             Session session = sessionFactory.openSession()) {
+             Session session = sessionFactory.openSession();
+             Session session1 = sessionFactory.openSession()) {
+            TestDataImporter.importData(sessionFactory);
+
             session.beginTransaction();
-//            session.enableFetchProfile("withCompanyAndPayment");
+            session1.beginTransaction();
 
-            var userGraph = session.createEntityGraph(User.class);
-            userGraph.addAttributeNodes("company", "userChats");
-            var userChatsSubgraph = userGraph.addSubGraph("userChats", UserChat.class);
-            userChatsSubgraph.addAttributeNodes("chat");
 
-            Map<String, Object> properties = Map.of(
-//                    GraphSemantic.LOAD.getJpaHintName(), session.getEntityGraph("WithCompanyAndChat")
-                    GraphSemantic.LOAD.getJpaHintName(), userGraph
-            );
-            var user = session.find(User.class, 1L, properties);
-            System.out.println(user.getCompany().getName());
-            System.out.println(user.getUserChats().size());
+            var payment = session.find(Payment.class, 1L, LockModeType.OPTIMISTIC);
+            payment.setAmount(payment.getAmount() + 10);
 
-//            System.out.println(user.getPayments().size());
-//            System.out.println(user.getCompany().getName());
-
-            var users = session.createQuery(
-                    "select u from User u " +
-                            "where 1 = 1", User.class)
-//                    .setHint(GraphSemantic.LOAD.getJpaHintName(), session.getEntityGraph("WithCompanyAndChat"))
-                    .setHint(GraphSemantic.LOAD.getJpaHintName(), userGraph)
-                    .list();
-
-            users.forEach(it -> System.out.println(it.getUserChats().size()));
-            users.forEach(it -> System.out.println(it.getCompany().getName()));
+            var theSamePayment = session1.find(Payment.class, 1L, LockModeType.OPTIMISTIC);
+            theSamePayment.setAmount(theSamePayment.getAmount() + 20);
 
             session.getTransaction().commit();
+            session1.getTransaction().commit();
         }
     }
 }
