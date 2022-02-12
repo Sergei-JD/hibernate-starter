@@ -1,6 +1,5 @@
 package com.hibernate.dao;
 
-import com.hibernate.dto.CompanyDto;
 import com.hibernate.entity.Payment;
 import com.hibernate.entity.User;
 import com.hibernate.util.HibernateTestUtil;
