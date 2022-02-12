@@ -1,26 +1,9 @@
 package com.hibernate.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
-import org.hibernate.annotations.BatchSize;
+import lombok.*;
 import org.hibernate.annotations.SortNatural;
 
-import javax.persistence.CascadeType;
-import javax.persistence.CollectionTable;
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.MapKey;
-import javax.persistence.MapKeyColumn;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
@@ -32,7 +15,7 @@ import java.util.TreeMap;
 @AllArgsConstructor
 @EqualsAndHashCode(of = "name")
 @ToString(exclude = "users")
-@BatchSize(size = 3)
+//@BatchSize(size = 3)
 public class Company {
 
     @Id
