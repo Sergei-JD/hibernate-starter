@@ -11,16 +11,16 @@ import org.hibernate.Hibernate;
 import org.hibernate.annotations.QueryHints;
 import org.junit.jupiter.api.Test;
 
-import javax.persistence.Table;
 import javax.persistence.Column;
 import javax.persistence.FlushModeType;
-import java.lang.reflect.Field;
+import javax.persistence.Table;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.sql.ResultSet;
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Arrays;
 
 import static java.util.Optional.ofNullable;

@@ -1,11 +1,27 @@
 package com.hibernate.entity;
 
-import lombok.*;
+import lombok.Data;
+import lombok.Builder;
+import lombok.ToString;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 import org.hibernate.annotations.SortNatural;
 
-import javax.persistence.*;
-import java.util.HashMap;
+import javax.persistence.Id;
+import javax.persistence.MapKey;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.CascadeType;
+import javax.persistence.MapKeyColumn;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.CollectionTable;
+import javax.persistence.ElementCollection;
 import java.util.Map;
+import java.util.HashMap;
 import java.util.TreeMap;
 
 @Data

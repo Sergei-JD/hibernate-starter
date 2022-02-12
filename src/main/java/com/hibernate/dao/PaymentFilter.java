@@ -1,7 +1,7 @@
 package com.hibernate.dao;
 
-import lombok.Builder;
 import lombok.Value;
+import lombok.Builder;
 
 @Value
 @Builder

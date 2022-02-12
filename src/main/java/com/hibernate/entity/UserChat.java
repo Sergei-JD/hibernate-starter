@@ -1,12 +1,19 @@
 package com.hibernate.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 
 @Data
 @Entity

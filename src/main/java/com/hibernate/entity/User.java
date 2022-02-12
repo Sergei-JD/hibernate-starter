@@ -1,13 +1,35 @@
 package com.hibernate.entity;
 
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.FetchProfile;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 
-import javax.persistence.*;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToOne;
+import javax.persistence.Enumerated;
+import javax.persistence.JoinColumn;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.NamedEntityGraph;
+import javax.persistence.AttributeOverride;
+import javax.persistence.NamedAttributeNode;
+
+import javax.persistence.NamedQuery;
+import javax.persistence.NamedSubgraph;
+import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -1,7 +1,7 @@
 package com.hibernate.dao;
 
-import com.hibernate.entity.Payment;
 import com.hibernate.entity.User;
+import com.hibernate.entity.Payment;
 import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQuery;
 import lombok.AccessLevel;
@@ -10,9 +10,9 @@ import org.hibernate.Session;
 
 import java.util.List;
 
+import static com.hibernate.entity.QUser.user;
 import static com.hibernate.entity.QCompany.company;
 import static com.hibernate.entity.QPayment.payment;
-import static com.hibernate.entity.QUser.user;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class UserDao {
