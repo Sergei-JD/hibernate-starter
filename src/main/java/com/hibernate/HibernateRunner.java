@@ -7,17 +7,21 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 import java.sql.SQLException;
+import java.util.List;
 
 @Slf4j
 public class HibernateRunner {
 
     public static void main(String[] args) throws SQLException {
-
         try (SessionFactory sessionFactory = HibernateUtil.buildSessionFactory();
-        Session session = sessionFactory.openSession()) {
+             Session session = sessionFactory.openSession()) {
             session.beginTransaction();
 
-            var checkUser = session.get(User.class, 1L);
+//            var user = session.get(User.class, 1L);
+//            System.out.println(user.getPayments().size());
+//            System.out.println(user.getCompany().getName());
+            var users = session.createQuery("select u from User u", User.class)
+                    .list();
 
             session.getTransaction().commit();
         }
