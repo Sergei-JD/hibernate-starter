@@ -1,19 +1,21 @@
 package com.hibernate.entity;
 
-import lombok.Data;
+import com.hibernate.listener.UserChatListener;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
 
-import javax.persistence.Id;
-import javax.persistence.Table;
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
+import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 @Data
 @Entity
@@ -22,6 +24,7 @@ import javax.persistence.GenerationType;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "users_chat")
+@EntityListeners(UserChatListener.class)
 public class UserChat extends AuditableEntity<Long> {
 
     @Id
