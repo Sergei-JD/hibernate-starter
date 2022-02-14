@@ -11,6 +11,8 @@ import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.FetchProfile;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -58,14 +60,15 @@ import static com.hibernate.util.StringUtils.SPACE;
         "where u.personalInfo.firstname = :firstname and c.name = :companyName " +
         "order by u.personalInfo.lastname desc")
 @Data
-@Entity
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "username")
 @ToString(exclude = {"company", "userChats", "payments"})
+@Builder
+@Entity
 @Table(name = "users", schema = "public")
 @TypeDef(name = "dmdev", typeClass = JsonBinaryType.class)
+@Audited
 public class User implements Comparable<User>, BaseEntity<Long> {
 
     @Id
@@ -84,10 +87,6 @@ public class User implements Comparable<User>, BaseEntity<Long> {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "company_id") // company_id
-//    @Fetch(FetchMode.JOIN)
-    private Company company;
 
 //    @OneToOne(
 //            mappedBy = "user",
@@ -96,15 +95,22 @@ public class User implements Comparable<User>, BaseEntity<Long> {
 //    )
 //    private Profile profile;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "company_id") // company_id
+//    @Fetch(FetchMode.JOIN)
+    private Company company;
+
+    @NotAudited
     @Builder.Default
     @OneToMany(mappedBy = "user")
     private List<UserChat> userChats = new ArrayList<>();
 
+    @NotAudited
     @Builder.Default
 //    @BatchSize(size = 3)
-    // 1 + N -> 1 + 500 -> 1 + 500/3 -> (>100)
+//    1 + N -> 1 + 500 -> 1 + 500/3 -> 3
 //    @Fetch(FetchMode.SUBSELECT)
-    // 1 + N -> 1 -> 2
+//    1 + N -> 1 + 1 -> 2
     @OneToMany(mappedBy = "receiver")
     private List<Payment> payments = new ArrayList<>();
 

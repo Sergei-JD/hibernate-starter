@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.envers.Audited;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,12 +17,13 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Version;
 
 @Data
-@Entity
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
+@Entity
 //@OptimisticLocking(type = OptimisticLockType.ALL)
 //@DynamicUpdate
+@Audited
 public class Payment extends AuditableEntity<Long> {
 
     @Id
@@ -34,6 +36,7 @@ public class Payment extends AuditableEntity<Long> {
     @Column(nullable = false)
     private Integer amount;
 
+    //    @NotAudited
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "receiver_id")
     private User receiver;

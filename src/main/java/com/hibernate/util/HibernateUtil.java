@@ -2,6 +2,7 @@ package com.hibernate.util;
 
 import com.hibernate.converter.BirthdayConverter;
 import com.hibernate.entity.Audit;
+import com.hibernate.entity.Revision;
 import com.hibernate.entity.User;
 import com.hibernate.interceptor.GlobalInterceptor;
 import com.hibernate.listener.AuditTableListener;
@@ -22,7 +23,7 @@ public class HibernateUtil {
         configuration.configure();
 
         var sessionFactory = configuration.buildSessionFactory();
-        registerListeners(sessionFactory);
+//        registerListeners(sessionFactory);
 
         return sessionFactory;
     }
@@ -40,10 +41,10 @@ public class HibernateUtil {
         configuration.setPhysicalNamingStrategy(new CamelCaseToUnderscoresNamingStrategy());
         configuration.addAnnotatedClass(User.class);
         configuration.addAnnotatedClass(Audit.class);
+        configuration.addAnnotatedClass(Revision.class);
         configuration.addAttributeConverter(new BirthdayConverter());
         configuration.registerTypeOverride(new JsonBinaryType());
         configuration.setInterceptor(new GlobalInterceptor());
-
         return configuration;
     }
 }
