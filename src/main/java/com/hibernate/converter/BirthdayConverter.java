@@ -2,8 +2,8 @@ package com.hibernate.converter;
 
 import com.hibernate.entity.Birthday;
 
-import javax.persistence.Converter;
 import javax.persistence.AttributeConverter;
+import javax.persistence.Converter;
 import java.sql.Date;
 import java.util.Optional;
 

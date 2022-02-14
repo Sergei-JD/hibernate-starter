@@ -1,31 +1,31 @@
 package com.hibernate.entity;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.ToString;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
+import lombok.ToString;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.SortNatural;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
 
-import javax.persistence.Id;
-import javax.persistence.MapKey;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.JoinColumn;
 import javax.persistence.CascadeType;
-import javax.persistence.MapKeyColumn;
+import javax.persistence.CollectionTable;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
-import javax.persistence.CollectionTable;
-import javax.persistence.ElementCollection;
-import java.util.Map;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.MapKey;
+import javax.persistence.MapKeyColumn;
+import javax.persistence.OneToMany;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.TreeMap;
 
 @Data
