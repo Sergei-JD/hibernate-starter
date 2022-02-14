@@ -40,6 +40,12 @@ import java.util.List;
 import static com.hibernate.util.StringUtils.SPACE;
 
 @NamedEntityGraph(
+        name = "WithCompany",
+        attributeNodes = {
+                @NamedAttributeNode(value = "company")
+        }
+)
+@NamedEntityGraph(
         name = "WithCompanyAndChat",
         attributeNodes = {
                 @NamedAttributeNode("company"),
@@ -113,8 +119,8 @@ public class User implements Comparable<User>, BaseEntity<Long> {
     @Builder.Default
 //    @BatchSize(size = 3)
 //    1 + N -> 1 + 500 -> 1 + 500/3 -> 3
-//    @Fetch(FetchMode.SUBSELECT)
 //    1 + N -> 1 + 1 -> 2
+//    @Fetch(FetchMode.SUBSELECT)
     @OneToMany(mappedBy = "receiver")
     private List<Payment> payments = new ArrayList<>();
 
