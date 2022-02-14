@@ -1,16 +1,12 @@
 package com.hibernate;
 
-import com.hibernate.entity.Payment;
+import com.hibernate.entity.User;
 import com.hibernate.util.HibernateUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.ReplicationMode;
 import org.hibernate.SessionFactory;
-import org.hibernate.envers.AuditReaderFactory;
-import org.hibernate.envers.query.AuditEntity;
 
 import javax.transaction.Transactional;
 import java.sql.SQLException;
-import java.util.Date;
 
 @Slf4j
 public class HibernateRunner {
@@ -19,31 +15,27 @@ public class HibernateRunner {
     public static void main(String[] args) throws SQLException {
         try (SessionFactory sessionFactory = HibernateUtil.buildSessionFactory()) {
 //            TestDataImporter.importData(sessionFactory);
+            User user = null;
             try (var session = sessionFactory.openSession()) {
                 session.beginTransaction();
 
-                var payment = session.find(Payment.class, 1L);
-                payment.setAmount(payment.getAmount() + 10);
+                user = session.find(User.class, 1L);
+                user.getCompany().getName();
+                user.getUserChats().size();
+                var user1 = session.find(User.class, 1L);
 
                 session.getTransaction().commit();
             }
-            try (var session2 = sessionFactory.openSession()) {
-                session2.beginTransaction();
+            try (var session = sessionFactory.openSession()) {
+                session.beginTransaction();
 
-                var auditReader = AuditReaderFactory.get(session2);
-//                auditReader.find(Payment.class, 1L, 1L)
-                Payment oldPayment = auditReader.find(Payment.class, 1L, new Date(1644821956333L));
-                session2.replicate(oldPayment, ReplicationMode.OVERWRITE);
+                var user2 = session.find(User.class, 1L);
+                user2.getCompany().getName();
+                user2.getUserChats().size();
 
-                auditReader.createQuery()
-                        .forEntitiesAtRevision(Payment.class, 400L)
-                        .add(AuditEntity.property("amount").ge(450))
-                        .add(AuditEntity.property("id").ge(6L))
-                        .addProjection(AuditEntity.property("amount"))
-                        .addProjection(AuditEntity.id())
-                        .getResultList();
 
-                session2.getTransaction().commit();
+
+                session.getTransaction().commit();
             }
         }
     }
