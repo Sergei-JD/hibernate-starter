@@ -1,12 +1,12 @@
 package com.hibernate.dao;
 
-import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.ExpressionUtils;
+import com.querydsl.core.types.Predicate;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Function;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
